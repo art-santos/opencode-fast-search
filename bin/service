@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+DIR="/home/dev-env/agent-exploration-optimizer"
+PIDFILE="/tmp/opencode/jev-local.pid"
+LOGFILE="/tmp/opencode/jev-local.log"
+mkdir -p /tmp/opencode
+
+case "${1:-start}" in
+  start)
+    if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+      echo "jev-local already running (pid $(cat "$PIDFILE"))"
+      exit 0
+    fi
+    echo "Starting jev-local on 127.0.0.1:8000..."
+    cd "$DIR"
+    # shellcheck disable=SC2086
+    nohup "$DIR/.venv/bin/uvicorn" src.jev_server.app:app --host 127.0.0.1 --port 8000 > "$LOGFILE" 2>&1 &
+    echo $! > "$PIDFILE"
+    echo "Started (pid $!)"
+    ;;
+  stop)
+    if [ -f "$PIDFILE" ]; then
+      kill "$(cat "$PIDFILE")" 2>/dev/null || true
+      rm -f "$PIDFILE"
+      echo "Stopped jev-local."
+    else
+      pkill -f "src.jev_server.app" 2>/dev/null || true
+      echo "Stopped jev-local."
+    fi
+    ;;
+  status|health)
+    curl -sf http://127.0.0.1:8000/health
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status}"
+    exit 1
+    ;;
+esac
