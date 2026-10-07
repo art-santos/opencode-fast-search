@@ -161,7 +161,7 @@ def evaluate_systemone(req: dict[str, Any]) -> dict[str, Any]:
     return {"model": model, "answers": answers, "usage": usage}
 
 
-app = FastAPI(title="agent-exploration-optimizer jev-local")
+app = FastAPI(title="opencode-fast-search jev-local")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

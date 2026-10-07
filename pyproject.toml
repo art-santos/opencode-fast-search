@@ -1,5 +1,5 @@
 [project]
-name = "agent-exploration-optimizer"
+name = "opencode-fast-search"
 version = "0.1.0"
 description = "Standalone JIT-Context & Jev Decision Engine for OpenCode"
 readme = "README.md"

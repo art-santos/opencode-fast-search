@@ -1,4 +1,8 @@
+from pathlib import Path
+
 from src.mcp_server import handle_request
+
+FIXTURES = str(Path(__file__).parent / "fixtures" / "sample.ts")
 
 
 def test_tools_list():
@@ -18,8 +22,8 @@ def test_call_jit_capsule():
             "params": {
                 "name": "jit_capsule",
                 "arguments": {
-                    "query": "DefineItem",
-                    "target_path": "/home/dev-env/zipfy-monorepo-transposed/packages/primitives-v2/primitive-catalog/src/domain/deciders/DefineItemDecider.ts",
+                    "query": "CatalogSearcher",
+                    "target_path": FIXTURES,
                 },
             },
         }
